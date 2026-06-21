@@ -1,9 +1,9 @@
 #define SIM_RX_PIN 27
 #define SIM_TX_PIN 26
-const String SO_DIEN_THOAI = "+84704160313";
+const String SO_DIEN_THOAI = "";
 // --- Thêm vào đầu file cùng chỗ với SO_DIEN_THOAI ---
-const String TG_TOKEN  = "8456520629:AAFm9tTdNCjeenby2lVW_gg0mKjxD_5-3vE"; // token bot
-const String TG_CHATID = "8779465788"; // chat_id của bạn
+const String TG_TOKEN  = ""; // token bot
+const String TG_CHATID = ""; // chat_id của bạn
 HardwareSerial SerialSIM(1);
 
 // =====================================================
