@@ -1,0 +1,3 @@
+Change Component Footprint: Designator=OLED Old Footprint=Header 4P DC 2.54 New Footprint=JP 1x4 DT
+Change Component Footprint: Designator=RFID Old Footprint=Header 8P DC 2.54 New Footprint=JP 1x8 DT
+Added Room: Name=Datn

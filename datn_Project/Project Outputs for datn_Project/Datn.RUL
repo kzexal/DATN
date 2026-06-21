@@ -1,0 +1,9 @@
+DRC Rules Export File for PCB: C:\Users\buidu\OneDrive\Máy tính\datn\datn_Project\Datn.PcbDoc
+RuleKind=Width|RuleName=3.3V|Scope=Board|Minimum=19.69
+RuleKind=Width|RuleName=4V|Scope=Board|Minimum=19.69
+RuleKind=Width|RuleName=5V|Scope=Board|Minimum=19.69
+RuleKind=Width|RuleName=GND|Scope=Board|Minimum=19.69
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion|Scope=Board|Minimum=4.00
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=11.81
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=15.75
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0

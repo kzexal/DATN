@@ -1,180 +1,506 @@
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <WiFiClientSecure.h>
+#include <ArduinoJson.h>
 #include <SPI.h>
 #include <MFRC522.h>
 #include <TinyGPS++.h>
-#include <HardwareSerial.h>
-#include <U8g2lib.h>
 #include <Wire.h>
-#include <WiFi.h>
-#include <Firebase_ESP_Client.h>
-#include <HTTPClient.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SH110X.h>
 
-// 1. CẤU HÌNH THÔNG TIN KẾT NỐI (Bạn điền vào đây)
-#define WIFI_SSID "17_501"
-#define WIFI_PASSWORD "nopassdau101"
-#define FIREBASE_API_KEY "" // Lấy từ Firebase Project Settings
-#define FIREBASE_DATABASE_URL ""
+// =====================================================
+// ĐỊNH NGHĨA CHÂN KẾT NỐI
+// =====================================================
+#define SIM_RX_PIN    27
+#define SIM_TX_PIN    26
+#define GPS_RX_PIN    16
+#define GPS_TX_PIN    4
+#define I2C_SDA_PIN   22
+#define I2C_SCL_PIN   23
+#define RFID_SCK_PIN  19
+#define RFID_MISO_PIN 5
+#define RFID_MOSI_PIN 18
+#define RFID_SS_PIN   21
+#define RFID_RST_PIN  17
+#define BUZZER_PIN    13
 
-// 2. CẤU HÌNH TELEGRAM (Đã điền theo yêu cầu của bạn)
-const String botToken = "";
-const String chatID = "";
+// =====================================================
+// CẤU HÌNH MẠNG & API
+// =====================================================
+const char* WIFI_SSID = "";
+const char* WIFI_PASS = "";
 
-// 3. KHAI BÁO CHÂN LINH KIỆN
-#define RST_PIN    4
-#define SS_PIN     5
-#define BUZZER_PIN 25
-#define GPS_RX     16
-#define GPS_TX     17
+const String BOT_TOKEN = "";
+const String FIREBASE_HOST = "";
+const String FIREBASE_AUTH = ""; 
 
-// 4. KHỞI TẠO ĐỐI TƯỢNG
-MFRC522 mfrc522(SS_PIN, RST_PIN);
-TinyGPSPlus gps;
+// =====================================================
+// KHỞI TẠO ĐỐI TƯỢNG
+// =====================================================
+HardwareSerial SerialSIM(1);
 HardwareSerial SerialGPS(2);
-U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE, /* clock=*/ 22, /* data=*/ 21);
 
-FirebaseData fbdo;
-FirebaseAuth auth;
-FirebaseConfig config;
+MFRC522 rfid(RFID_SS_PIN, RFID_RST_PIN);
+TinyGPSPlus gps;
+Adafruit_SH1106G display = Adafruit_SH1106G(128, 64, &Wire, -1);
 
-// Biến lưu trữ trạng thái GPS
-double currentLat = 0;
-double currentLng = 0;
+TaskHandle_t TaskGPS;
+unsigned long lastBotCheck = 0;
+long lastUpdateId = 0;
 
-void setup() {
-  Serial.begin(115200);
-  SerialGPS.begin(9600, SERIAL_8N1, GPS_RX, GPS_TX);
-  
-  // Khởi tạo phần cứng
-  SPI.begin();
-  mfrc522.PCD_Init();
-  pinMode(BUZZER_PIN, OUTPUT);
-  u8g2.begin();
-  
-  hienThiManHinh("DANG KET NOI...", "Vui long cho");
+WiFiClientSecure secureClient;
 
-  // Kết nối WiFi
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+// =====================================================
+// LUỒNG GPS ĐỘC LẬP
+// =====================================================
+void gpsTask(void * pvParameters) {
+  for(;;) {
+    while (SerialGPS.available() > 0) {
+      gps.encode(SerialGPS.read());
+    }
+    vTaskDelay(10 / portTICK_PERIOD_MS);
   }
-  Serial.println("\nWiFi connected");
-
-  // Cấu hình Firebase
-  config.api_key = FIREBASE_API_KEY;
-  config.database_url = FIREBASE_DATABASE_URL;
-  Firebase.begin(&config, &auth);
-  Firebase.reconnectWiFi(true);
-
-  hienThiManHinh("HUST - SAN SANG", "Hay quet the...");
-  beep(100);
 }
 
+// =====================================================
+// HÀM TIỆN ÍCH
+// =====================================================
+String urlEncode(String str) {
+  String encoded = "";
+  for (int i = 0; i < str.length(); i++) {
+    char c = str[i];
+    if (isalnum(c)) {
+      encoded += c;
+    } else {
+      char buf[4];
+      sprintf(buf, "%%%02X", c);
+      encoded += buf;
+    }
+  }
+  return encoded;
+}
+
+String getGPSFormattedTime() {
+  if (!gps.time.isValid()) {
+    return "Chua cap nhat";
+  }
+  int hour = (gps.time.hour() + 7) % 24;
+  int minute = gps.time.minute();
+  int second = gps.time.second();
+  char timeBuf[12];
+  sprintf(timeBuf, "%02d:%02d:%02d", hour, minute, second);
+  return String(timeBuf);
+}
+
+String sendAT(String cmd, int waitMs = 2000) {
+  while (SerialSIM.available()) SerialSIM.read();
+  SerialSIM.println(cmd);
+
+  String raw = "";
+  long start = millis();
+
+  while (millis() - start < waitMs) {
+    while (SerialSIM.available()) {
+      raw += (char)SerialSIM.read();
+    }
+    if (raw.indexOf("OK") != -1 || raw.indexOf("ERROR") != -1) {
+      delay(50);
+      while (SerialSIM.available()) raw += (char)SerialSIM.read();
+      break;
+    }
+  }
+
+  String clean = "";
+  for (char c : raw) {
+    if ((c >= 32 && c <= 126) || c == '\r' || c == '\n') clean += c;
+  }
+  
+  Serial.print("[AT] "); Serial.print(cmd); Serial.print(" -> "); Serial.println(clean);
+  return clean;
+}
+
+// =====================================================
+// MÀN HÌNH OLED
+// =====================================================
+void inOLED(String dong1, String dong2 = "", String dong3 = "") {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SH110X_WHITE);
+  display.setCursor(0, 5);
+  display.println(dong1);
+  if(dong2 != "") { display.setCursor(0, 25); display.println(dong2); }
+  if(dong3 != "") { display.setCursor(0, 45); display.println(dong3); }
+  display.display();
+}
+
+void showIdleScreen() {
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(SH110X_WHITE);
+  display.setCursor(15, 5);
+  display.println("HE THONG SAN SANG");
+  display.drawLine(0, 18, 128, 18, SH110X_WHITE);
+  display.setTextSize(2);
+  display.setCursor(15, 35);
+  display.println("QUET THE");
+  display.display();
+}
+
+// =====================================================
+// TƯƠNG TÁC FIREBASE
+// =====================================================
+bool getParentData(String uid, String &chatId, String &phone, String &currentStatus, String &studentName) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+
+  Serial.println("[FB] Dang lay du lieu...");
+  HTTPClient http;
+  String url = "https://" + FIREBASE_HOST + "/users/" + uid + ".json?auth=" + FIREBASE_AUTH;
+  
+  http.begin(secureClient, url);
+  int httpCode = http.GET();
+  bool success = false;
+
+  if (httpCode == HTTP_CODE_OK) {
+    String jsonStr = http.getString();
+    DynamicJsonDocument doc(1024);
+    DeserializationError error = deserializeJson(doc, jsonStr);
+    
+    if (!error) {
+      phone = doc["phone"].as<String>();
+      
+      // ĐIỀU KIỆN MỚI: Chỉ cần có số điện thoại hợp lệ là cho qua bài test dữ liệu
+      if (phone.length() >= 9) {
+        chatId = doc["chat_id"].as<String>(); // Lấy chat_id (chấp nhận cả chuỗi ngắn hoặc lỗi)
+        
+        if (phone.startsWith("84") && !phone.startsWith("+")) {
+          phone = "+" + phone;
+        }
+        
+        if (doc.containsKey("name")) {
+          studentName = doc["name"].as<String>();
+        } else {
+          studentName = "Hoc sinh";
+        }
+        
+        if (doc.containsKey("status")) {
+          currentStatus = doc["status"].is<JsonObject>() ? 
+                          doc["status"].as<JsonObject>().begin()->value().as<String>() : 
+                          doc["status"].as<String>();
+        } else {
+          currentStatus = "out";
+        }
+        success = true;
+      }
+    }
+  }
+  http.end();
+  return success;
+}
+
+void updateStatus(String uid, String newStatus) {
+  if (WiFi.status() != WL_CONNECTED) return;
+  HTTPClient http;
+  String url = "https://" + FIREBASE_HOST + "/users/" + uid + "/status.json?auth=" + FIREBASE_AUTH;
+  http.begin(secureClient, url);
+  http.addHeader("Content-Type", "application/json");
+  String body = "\"" + newStatus + "\"";
+  http.PUT(body); 
+  http.end();
+}
+
+// =====================================================
+// TRUYỀN TIN: TELEGRAM & SMS
+// =====================================================
+bool sendTelegram(String chatId, String message) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  HTTPClient http;
+  String url = "https://api.telegram.org/bot" + BOT_TOKEN + "/sendMessage?chat_id=" + chatId + "&text=" + urlEncode(message);
+  http.begin(secureClient, url);
+  int httpCode = http.GET();
+  bool success = (httpCode == HTTP_CODE_OK);
+  http.end();
+  return success;
+}
+int checkSignalStrength() {
+  String res = sendAT("AT+CSQ", 1000);
+  int start = res.indexOf(":");
+  int comma = res.indexOf(",");
+  if (start != -1 && comma != -1) {
+    String csq = res.substring(start + 1, comma);
+    csq.trim();
+    return csq.toInt();
+  }
+  return 0;
+}
+bool sendSMS(String number, String text) {
+  int retryCount = 0;
+  const int maxRetries = 3;
+  bool smsSuccess = false;
+
+  while (retryCount < maxRetries && !smsSuccess) {
+    Serial.println("\n--- [DEBUG SMS START] ---");
+    Serial.println("[SMS] Lan thu gui: " + String(retryCount + 1));
+    Serial.println("[SMS] So: " + number);
+
+    // 1. Ngắt Wi-Fi để dồn điện và chống nhiễu
+    WiFi.disconnect(true);
+    delay(1000);
+    
+    // Xóa sạch bộ đệm trước khi làm việc
+    while(SerialSIM.available()) SerialSIM.read();
+
+    // 2. Check sóng
+    int csq = checkSignalStrength();
+    Serial.print("[SMS DEBUG] Chat luong song (CSQ): "); Serial.println(csq);
+    
+    if (csq < 10 || csq == 99) {
+      Serial.println("[SMS] LOI: Song qua yeu, huy lan gui nay...");
+      delay(5000); // Đợi 5 giây trước khi retry
+      retryCount++;
+      continue; 
+    }
+
+    // 3. Reset module SIM
+    sendAT("AT", 1000); 
+    sendAT("AT+CMGF=1", 1000); 
+
+    // 4. Gửi lệnh CMGS
+    SerialSIM.print("AT+CMGS=\"");
+    SerialSIM.print(number);
+    SerialSIM.println("\"");
+    
+    // Đợi dấu '>'
+    long startWait = millis();
+    bool promptFound = false;
+    String debugBuffer = "";
+    while (millis() - startWait < 5000) {
+      while (SerialSIM.available()) {
+        char c = SerialSIM.read();
+        debugBuffer += c;
+        if (c == '>') promptFound = true;
+      }
+    }
+    
+    Serial.println("[SMS DEBUG] Response sau CMGS: " + debugBuffer);
+
+    if (!promptFound) {
+      Serial.println("[SMS] LOI: Khong nhan duoc dau '>'. SIM bi treo.");
+      SerialSIM.write(27); 
+      delay(2000);
+    } else {
+      Serial.println("[SMS] Da thay dau '>', gui tin...");
+      SerialSIM.print(text);
+      delay(100);
+      SerialSIM.write(26); 
+      delay(3000); // Đợi module xử lý gửi đi
+
+      // Đợi kết quả
+      long startResult = millis();
+      String result = "";
+      while (millis() - startResult < 20000) { 
+        while (SerialSIM.available()) {
+          result += (char)SerialSIM.read();
+        }
+        if (result.indexOf("OK") != -1 || result.indexOf("ERROR") != -1 || result.indexOf("+CMGS:") != -1) break;
+      }
+      Serial.println("[SMS DEBUG] Response ket thuc: " + result);
+      
+      if (result.indexOf("+CMGS:") != -1) {
+        smsSuccess = true;
+      }
+    }
+
+    // Kết nối lại Wi-Fi sau mỗi lần thử (thành công hay thất bại đều cần reconnect)
+    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    if (!smsSuccess) {
+      delay(2000); 
+      retryCount++;
+    }
+  }
+
+  return smsSuccess;
+}
+
+void checkTelegramUpdates() {
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  HTTPClient http;
+  // Bot Telegram sẽ gửi lệnh, ta lấy message mới nhất
+  String url = "https://api.telegram.org/bot" + BOT_TOKEN + "/getUpdates?offset=-1";
+  
+  http.begin(secureClient, url);
+  int httpCode = http.GET();
+
+  if (httpCode == HTTP_CODE_OK) {
+    String jsonStr = http.getString();
+    DynamicJsonDocument doc(1024);
+    if (!deserializeJson(doc, jsonStr)) {
+      if (doc["result"].size() > 0) {
+        long update_id = doc["result"][0]["update_id"];
+        
+        // Kiểm tra xem có text message không
+        if (doc["result"][0]["message"].containsKey("text")) {
+          String text = doc["result"][0]["message"]["text"].as<String>();
+          String chat_id = doc["result"][0]["message"]["chat"]["id"].as<String>();
+          text.toLowerCase();
+
+          // Chỉ xử lý nếu là tin nhắn mới
+          if (update_id > lastUpdateId) {
+            lastUpdateId = update_id;
+            
+            // Xử lý từ khóa "vitri" hoặc "/vitri"
+            if (text.indexOf("vitri") != -1) {
+              if (gps.location.isValid()) {
+                String thoiGian = getGPSFormattedTime();
+                String mapLink = "Vị trí xe buýt hiện tại:\nThời gian: " + thoiGian + "\nhttp://maps.google.com/?q=" + String(gps.location.lat(), 6) + "," + String(gps.location.lng(), 6);
+                
+                sendTelegram(chat_id, mapLink);
+                Serial.println("[TG] Da gui vi tri cho chat_id: " + chat_id);
+              } else {
+                sendTelegram(chat_id, "Hệ thống đang dò tín hiệu GPS, vui lòng đợi...");
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  http.end();
+}
+
+// =====================================================
+// SETUP
+// =====================================================
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(BUZZER_PIN, OUTPUT);
+  digitalWrite(BUZZER_PIN, LOW);
+
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN); 
+  display.begin(0x3c, true);
+  
+  inOLED("HE THONG", "Dang khoi dong...");
+  delay(1000);
+
+  SPI.begin(RFID_SCK_PIN, RFID_MISO_PIN, RFID_MOSI_PIN, RFID_SS_PIN);
+  rfid.PCD_Init();
+
+  SerialGPS.begin(9600, SERIAL_8N1, GPS_RX_PIN, GPS_TX_PIN);
+  xTaskCreatePinnedToCore(gpsTask, "TaskGPS", 2048, NULL, 1, &TaskGPS, 0);
+
+  SerialSIM.begin(9600, SERIAL_8N1, SIM_RX_PIN, SIM_TX_PIN);
+  delay(2000);
+  sendAT("ATE0", 500);
+  sendAT("AT+CMGF=1", 1000);
+
+  // ---------------------------------------------------
+  // CẤU HÌNH KẾT NỐI WI-FI SIÊU TỐC
+  // ---------------------------------------------------
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(WIFI_PS_NONE);  // Tắt chế độ ngủ để chip thu phát sóng tối đa công suất
+  WiFi.persistent(true);        // Cho phép lưu thông tin AP vào bộ nhớ Flash NVS    // Tự động kết nối ở tầng phần cứng khi thấy sóng
+  WiFi.setAutoReconnect(true);
+
+  inOLED("KET NOI WI-FI", WIFI_SSID, "Dang thuc hien...");
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(100); // Giảm thời gian delay vòng lặp để bắt bắt tay nhanh hơn
+    Serial.print(".");
+  }
+  
+  secureClient.setInsecure();
+  inOLED("WI-FI THANH CONG!", WiFi.localIP().toString());
+  delay(1500);
+  showIdleScreen();
+}
+
+// =====================================================
+// LOOP
+// =====================================================
 void loop() {
-  // Cập nhật dữ liệu GPS liên tục
-  while (SerialGPS.available() > 0) {
-    gps.encode(SerialGPS.read());
-  }
-
-  // Lưu tọa độ nếu GPS bắt được tín hiệu
-  if (gps.location.isValid()) {
-    currentLat = gps.location.lat();
-    currentLng = gps.location.lng();
-  }
-
-  // Kiểm tra quẹt thẻ RFID
-  if (!mfrc522.PICC_IsNewCardPresent() || !mfrc522.PICC_ReadCardSerial()) {
+  if (WiFi.status() != WL_CONNECTED) {
+    inOLED("MAT KET NOI WI-FI", "Dang thu lai...");
+    WiFi.reconnect();
+    delay(2000);
+    if (WiFi.status() == WL_CONNECTED) showIdleScreen();
     return;
   }
 
-  // 1. Lấy mã UID
-  String uidStr = "";
-  for (byte i = 0; i < mfrc522.uid.size; i++) {
-    uidStr += String(mfrc522.uid.uidByte[i] < 0x10 ? "0" : "");
-    uidStr += String(mfrc522.uid.uidByte[i], HEX);
-  }
-  uidStr.toUpperCase();
-
-  // 2. Phản hồi tức thì (Còi + OLED)
-  beep(200);
-  hienThiManHinh("QUET THANH CONG", uidStr);
-
-  // 3. Gửi dữ liệu lên Cloud
-  guiDuLieuCloud(uidStr);
-
-  // Dừng đọc thẻ
-  mfrc522.PICC_HaltA();
-  delay(2000);
-  hienThiManHinh("HUST - SAN SANG", "Hay quet the...");
-}
-
-// --- HÀM HỖ TRỢ ---
-
-void beep(int duration) {
-  tone(BUZZER_PIN, 2500);
-  delay(duration);
-  noTone(BUZZER_PIN);
-}
-
-void hienThiManHinh(String line1, String line2) {
-  u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_ncenB08_tr);
-  u8g2.drawStr(0, 20, line1.c_str());
-  u8g2.setFont(u8g2_font_6x10_tf);
-  u8g2.drawStr(0, 45, line2.c_str());
-  u8g2.sendBuffer();
-}
-
-void guiDuLieuCloud(String uid) {
-  // Đẩy lên Firebase
-  String path = "/Log_QuetThe/" + String(millis());
-  FirebaseJson json;
-  json.add("UID", uid);
-  json.add("Lat", currentLat);
-  json.add("Lng", currentLng);
-  json.add("Status", "Success");
-  
-  if (Firebase.RTDB.setJSON(&fbdo, path.c_str(), &json)) {
-    Serial.println("Firebase: OK");
-  }
-
-  // Gửi Telegram
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    String message = "Thong bao tu ESP32:\n- Co nguoi quet the!\n- UID: " + uid;
-    if (currentLat != 0) {
-      message += "\n- Vi tri: https://www.google.com/maps?q=" + String(currentLat, 6) + "," + String(currentLng, 6);
-    } else {
-      message += "\n- Vi tri: Dang cap nhat GPS...";
+  if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
+    String uid = "";
+    for (byte i = 0; i < rfid.uid.size; i++) {
+      uid += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
+      uid += String(rfid.uid.uidByte[i], HEX);
     }
+    uid.toUpperCase();
 
-    String url = "https://api.telegram.org/bot" + botToken + "/sendMessage?chat_id=" + chatID + "&text=" + urlEncode(message);
-    http.begin(url);
-    int httpCode = http.GET();
-    if (httpCode > 0) Serial.println("Telegram: OK");
-    http.end();
-  }
-}
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(150);
+    digitalWrite(BUZZER_PIN, LOW);
 
-// Hàm mã hóa URL để gửi tin nhắn Telegram không bị lỗi ký tự đặc biệt
-String urlEncode(String str) {
-  String encodedString = "";
-  char c;
-  char code0;
-  char code1;
-  for (int i = 0; i < str.length(); i++) {
-    c = str.charAt(i);
-    if (isalnum(c)) {
-      encodedString += c;
+    inOLED("DA NHAN THE", "UID: " + uid, "Dang truy xuat...");
+
+    String chatId, phone, currentStatus, studentName;
+    if (getParentData(uid, chatId, phone, currentStatus, studentName)) {
+      String newStatus = (currentStatus == "in") ? "out" : "in";
+      updateStatus(uid, newStatus); 
+      
+      String thoiGian = getGPSFormattedTime(); 
+      String tgMessage = "";
+      String smsMessage = "";
+      
+      if (newStatus == "in") {
+        tgMessage = "Thông báo: Học sinh [" + studentName + "] da LEN xe buyt.\nThời gian: " + thoiGian + "\n";
+        smsMessage = "Hoc sinh [" + studentName + "] da LEN xe buyt vao luc " + thoiGian + ". ";
+        inOLED(studentName, "LEN XE", thoiGian);
+      } else {
+        tgMessage = "Thông báo: Học sinh [" + studentName + "] da XUONG xe buyt.\nThời gian: " + thoiGian + "\n";
+        smsMessage = "Hoc sinh [" + studentName + "] da XUONG xe buyt vao luc " + thoiGian + ". ";
+        inOLED(studentName, "XUONG XE", thoiGian);
+      }
+      
+      if (gps.location.isValid()) {
+        String mapsLink = "https://maps.google.com/?q=" + String(gps.location.lat(), 6) + "," + String(gps.location.lng(), 6);
+        tgMessage += "Vi tri: " + mapsLink;
+        smsMessage += "Vi tri: " + mapsLink;
+      }
+
+      // ---------------------------------------------------
+      // LOGIC XỬ LÝ CHAT ID DƯỚI 10 KÝ TỰ
+      // ---------------------------------------------------
+      if (chatId.length() < 10) {
+        Serial.println("[TG] Chat ID khong hop le (duoi 10 ky tu). Chuyen thang sang SMS...");
+        inOLED("KHONG CO CHAT ID", "Dang gui SMS...");
+        if (sendSMS(phone, smsMessage)) {
+          inOLED("HOAN TAT", "Da gui SMS");
+        } else {
+          inOLED("THAT BAI", "Loi gui SMS");
+        }
+      } else {
+        // Nếu Chat ID đủ độ dài, tiến hành gửi Telegram bình thường
+        if (!sendTelegram(chatId, tgMessage)) {
+          Serial.println("[TG] Loi gui Telegram, chuyen sang SMS du phong...");
+          inOLED("TG THAT BAI", "Chuyen sang SMS...");
+          sendSMS(phone, smsMessage);
+        }
+        inOLED("HOAN TAT", "Da xu ly xong");
+      }
+      
+      delay(2500); 
     } else {
-      code1 = (c & 0xf) + '0';
-      if ((c & 0xf) > 9) code1 = (c & 0xf) - 10 + 'A';
-      c = (c >> 4) & 0xf;
-      code0 = c + '0';
-      if (c > 9) code0 = c - 10 + 'A';
-      encodedString += '%';
-      encodedString += code0;
-      encodedString += code1;
+      inOLED("LOI DU LIEU", "The chua dang ky");
+      delay(2000);
     }
+    
+    rfid.PICC_HaltA();
+    showIdleScreen();
   }
-  return encodedString;
+
+  if (millis() - lastBotCheck > 10000) {
+    checkTelegramUpdates();
+    lastBotCheck = millis();
+  }
 }

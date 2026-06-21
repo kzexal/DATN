@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=GPS_TX Pin=ESP32-20
+Removed Pin From Net: NetName=GPS_RX Pin=ESP32-21
+Added Pin To Net: NetName=GPS_RX Pin=ESP32-20
+Added Pin To Net: NetName=GPS_TX Pin=ESP32-21
+Added Room: Name=Datn

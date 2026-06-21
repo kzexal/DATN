@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=I2C_SCK Pin=ESP32-29
+Removed Pin From Net: NetName=I2C_SDA Pin=ESP32-30
+Added Pin To Net: NetName=I2C_SDA Pin=ESP32-29
+Added Pin To Net: NetName=I2C_SCK Pin=ESP32-30
+Added Room: Name=Datn

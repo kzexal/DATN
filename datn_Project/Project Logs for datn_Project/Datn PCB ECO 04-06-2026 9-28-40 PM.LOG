@@ -1,0 +1,5 @@
+Change Component Designator: OldDesignator=C1 NewDesignator=Tu hoa 1000uF
+Change Component Designator: OldDesignator=C2 NewDesignator=Tu gom 1
+Change Component Designator: OldDesignator=C3 NewDesignator=Tu gom 2
+Change Component Designator: OldDesignator=C4 NewDesignator=Tu hoa 47uF
+Added Room: Name=Datn

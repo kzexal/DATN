@@ -1,0 +1,141 @@
+Added Component: Designator=Buzzer(HDR3)
+Add component (AddParameter): Name = "ComponentLink1 Description"; Value = "Manufacturer"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "http://www.we-online.com"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2 Description"; Value = "Datasheet"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "http://katalog.we-online.de/em/datasheet/6130xx143121.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Created by"; Value = "Karrer Zheng"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Created Date"; Value = "29 March 2013"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "W¨¹rth Elektronik eiSos GmbH"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "NoPins"; Value = "02"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "partNo"; Value = "613002143121"; VariantName = "[No Variations]"
+Added Component: Designator=C1(tu hoa 10mm)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH003745"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "So_Chan"; Value = "2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "T? Hóa 6.8uF 400V 10x17MM"; VariantName = "[No Variations]"
+Added Component: Designator=C2(tu gom)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004761"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "So_Chan"; Value = "2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "T? g?m 104 100nF 50V"; VariantName = "[No Variations]"
+Added Component: Designator=C3(tu gom)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004761"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "So_Chan"; Value = "2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "T? g?m 104 100nF 50V"; VariantName = "[No Variations]"
+Added Component: Designator=C4(tu hoa 5mm)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH006860"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "So_Chan"; Value = "2"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "T? Hóa 47uF 25V"; VariantName = "[No Variations]"
+Added Component: Designator=ESP32(ESP32 WROOM 32 KIT)
+Added Component: Designator=GPS(GPS)
+Added Component: Designator=KF1(Con 2 KF301 5.08)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH000987"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "CON 2 KF301-2P 5.08MM Xanh Duong"; VariantName = "[No Variations]"
+Added Component: Designator=Mach ha ap(Header 4P DC 2.54)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH001310"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Header 4P XH2.54-4P Ð?c Cong"; VariantName = "[No Variations]"
+Added Component: Designator=OLED(Header 4P DC 2.54)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH001310"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Header 4P XH2.54-4P Ð?c Cong"; VariantName = "[No Variations]"
+Added Component: Designator=RFID(Header 8P DC 2.54)
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH003367"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Header 8P XH2.54-8P Ð?c Cong"; VariantName = "[No Variations]"
+Added Component: Designator=Sim(Footprint_Module_SIM_A7680C)
+Added Component: Designator=Type C(Type C)
+Added Pin To Net: NetName=3.3V Pin=Buzzer-3
+Added Pin To Net: NetName=3.3V Pin=C2-2
+Added Pin To Net: NetName=3.3V Pin=C4-1
+Added Pin To Net: NetName=3.3V Pin=ESP32-16
+Added Pin To Net: NetName=3.3V Pin=GPS-1
+Added Pin To Net: NetName=3.3V Pin=OLED-1
+Added Pin To Net: NetName=3.3V Pin=RFID-8
+Added Net: Name=3.3V
+Added Pin To Net: NetName=4V_SIM Pin=C1-1
+Added Pin To Net: NetName=4V_SIM Pin=C3-2
+Added Pin To Net: NetName=4V_SIM Pin=Mach ha ap-1
+Added Pin To Net: NetName=4V_SIM Pin=Sim-7
+Added Net: Name=4V_SIM
+Added Pin To Net: NetName=5V Pin=ESP32-15
+Added Pin To Net: NetName=5V Pin=KF1-2
+Added Pin To Net: NetName=5V Pin=Mach ha ap-3
+Added Net: Name=5V
+Added Pin To Net: NetName=BUZZER Pin=Buzzer-2
+Added Pin To Net: NetName=BUZZER Pin=ESP32-18
+Added Net: Name=BUZZER
+Added Pin To Net: NetName=GND Pin=Buzzer-1
+Added Pin To Net: NetName=GND Pin=C1-2
+Added Pin To Net: NetName=GND Pin=C2-1
+Added Pin To Net: NetName=GND Pin=C3-1
+Added Pin To Net: NetName=GND Pin=C4-2
+Added Pin To Net: NetName=GND Pin=ESP32-17
+Added Pin To Net: NetName=GND Pin=GPS-2
+Added Pin To Net: NetName=GND Pin=Mach ha ap-2
+Added Pin To Net: NetName=GND Pin=OLED-2
+Added Pin To Net: NetName=GND Pin=RFID-6
+Added Pin To Net: NetName=GND Pin=Sim-11
+Added Pin To Net: NetName=GND Pin=Type C-4
+Added Net: Name=GND
+Added Pin To Net: NetName=GPS_RX Pin=ESP32-22
+Added Pin To Net: NetName=GPS_RX Pin=GPS-4
+Added Net: Name=GPS_RX
+Added Pin To Net: NetName=GPS_TX Pin=ESP32-21
+Added Pin To Net: NetName=GPS_TX Pin=GPS-3
+Added Net: Name=GPS_TX
+Added Pin To Net: NetName=I2C_SCK Pin=ESP32-29
+Added Pin To Net: NetName=I2C_SCK Pin=OLED-3
+Added Net: Name=I2C_SCK
+Added Pin To Net: NetName=I2C_SDA Pin=ESP32-26
+Added Pin To Net: NetName=I2C_SDA Pin=OLED-4
+Added Net: Name=I2C_SDA
+Added Pin To Net: NetName=NetKF1_1 Pin=KF1-1
+Added Pin To Net: NetName=NetKF1_1 Pin=Type C-1
+Added Net: Name=NetKF1_1
+Added Pin To Net: NetName=RFID_MISO Pin=ESP32-25
+Added Pin To Net: NetName=RFID_MISO Pin=RFID-4
+Added Net: Name=RFID_MISO
+Added Pin To Net: NetName=RFID_MOSI Pin=ESP32-30
+Added Pin To Net: NetName=RFID_MOSI Pin=RFID-3
+Added Net: Name=RFID_MOSI
+Added Pin To Net: NetName=RFID_RST Pin=ESP32-20
+Added Pin To Net: NetName=RFID_RST Pin=RFID-7
+Added Net: Name=RFID_RST
+Added Pin To Net: NetName=RFID_SCK Pin=ESP32-24
+Added Pin To Net: NetName=RFID_SCK Pin=RFID-2
+Added Net: Name=RFID_SCK
+Added Pin To Net: NetName=RFID_SDA Pin=ESP32-23
+Added Pin To Net: NetName=RFID_SDA Pin=RFID-1
+Added Net: Name=RFID_SDA
+Added Pin To Net: NetName=SIM_RX Pin=ESP32-10
+Added Pin To Net: NetName=SIM_RX Pin=Sim-9
+Added Net: Name=SIM_RX
+Added Pin To Net: NetName=SIM_TX Pin=ESP32-9
+Added Pin To Net: NetName=SIM_TX Pin=Sim-10
+Added Net: Name=SIM_TX
+Added Class: Name=Datn
+Added Room: Name=Datn

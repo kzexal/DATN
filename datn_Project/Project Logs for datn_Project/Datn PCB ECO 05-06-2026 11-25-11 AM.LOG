@@ -1,0 +1,10 @@
+Removed Pin From Net: NetName=GND Pin=Buzzer-1
+Removed Pin From Net: NetName=BUZZER Pin=Buzzer-2
+Removed Pin From Net: NetName=3.3V Pin=Buzzer-3
+Removed Member From Class: ClassName=Datn Member=Buzzer
+Added Component: Designator=Coi(Coi)
+Added Pin To Net: NetName=GND Pin=Coi-1
+Added Pin To Net: NetName=BUZZER Pin=Coi-2
+Added Pin To Net: NetName=3.3V Pin=Coi-3
+Added Member To Class: ClassName=Datn Member=Component Coi
+Added Room: Name=Datn

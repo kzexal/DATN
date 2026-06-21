@@ -1,0 +1,6 @@
+Added Component: Designator=Mach ha ap(Mach ha ap)
+Added Pin To Net: NetName=4V_SIM Pin=Mach ha ap-1
+Added Pin To Net: NetName=GND Pin=Mach ha ap-2
+Added Pin To Net: NetName=5V Pin=Mach ha ap-3
+Added Member To Class: ClassName=Datn Member=Component Mach ha ap
+Added Room: Name=Datn

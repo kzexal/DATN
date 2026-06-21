@@ -1,0 +1,4 @@
+Added Pin To Net: NetName=5V Pin=Cong tac-1
+Added Member To Class: ClassName=Datn Member=Component OLED
+Added Member To Class: ClassName=Datn Member=Component RFID
+Added Room: Name=Datn

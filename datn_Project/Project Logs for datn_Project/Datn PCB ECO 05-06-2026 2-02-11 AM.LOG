@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=SIM_TX Pin=ESP32-9
+Removed Pin From Net: NetName=SIM_RX Pin=ESP32-10
+Change Component Designator: OldDesignator= NewDesignator=Sim
+Added Pin To Net: NetName=SIM_RX Pin=ESP32-9
+Added Pin To Net: NetName=SIM_TX Pin=ESP32-10
+Added Room: Name=Datn

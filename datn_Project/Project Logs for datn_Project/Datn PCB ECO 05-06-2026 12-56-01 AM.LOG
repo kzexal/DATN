@@ -1,0 +1,17 @@
+Removed Pin From Net: NetName=RFID_RST Pin=ESP32-20
+Removed Pin From Net: NetName=GPS_TX Pin=ESP32-21
+Removed Pin From Net: NetName=GPS_RX Pin=ESP32-22
+Removed Pin From Net: NetName=RFID_SDA Pin=ESP32-23
+Removed Pin From Net: NetName=RFID_SCK Pin=ESP32-24
+Removed Pin From Net: NetName=RFID_MISO Pin=ESP32-25
+Removed Pin From Net: NetName=I2C_SDA Pin=ESP32-26
+Removed Pin From Net: NetName=RFID_MOSI Pin=ESP32-30
+Added Pin To Net: NetName=GPS_TX Pin=ESP32-20
+Added Pin To Net: NetName=GPS_RX Pin=ESP32-21
+Added Pin To Net: NetName=RFID_RST Pin=ESP32-22
+Added Pin To Net: NetName=RFID_MISO Pin=ESP32-23
+Added Pin To Net: NetName=RFID_MOSI Pin=ESP32-24
+Added Pin To Net: NetName=RFID_SCK Pin=ESP32-25
+Added Pin To Net: NetName=RFID_SDA Pin=ESP32-26
+Added Pin To Net: NetName=I2C_SDA Pin=ESP32-30
+Added Room: Name=Datn

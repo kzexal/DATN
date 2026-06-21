@@ -1,0 +1,16 @@
+{
+  "users": {
+    "AA953207": {
+      "name": "Nguyen_Van_A",
+      "chat_id": "87794657",
+      "phone": "+84704160313",
+      "status": "out"
+    },
+    "9A22F906": {
+      "name": "Nguyen_Van_B",
+      "chat_id": "12345678",
+      "phone": "+84366913204",
+      "status": "out"
+    }
+  }
+}
