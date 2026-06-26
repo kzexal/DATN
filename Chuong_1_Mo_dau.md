@@ -38,10 +38,10 @@ Tiến hành nghiên cứu về tình hình mất an toàn trên xe đưa đón 
 Xác định các yêu cầu chức năng và phi chức năng của hệ thống IoT. Thiết kế kiến trúc hệ thống bao gồm thiết bị nhận dạng, mạng truyền thông, cơ sở dữ liệu và giao diện cảnh báo tới người dùng. Xác định các phương pháp xử lý dữ liệu để tự động điểm danh và định vị vị trí xe.
 
 3. Xây dựng phân hệ phần cứng
-Dựa trên yêu cầu của hệ thống, lựa chọn các thiết bị cảm biến (RFID RC522, GPS NEO-6M) và thiết bị truyền thông (SIM7600/A7670) phù hợp. Thiết kế thiết bị nhỏ gọn có thể gắn vào xe buýt với khả năng tính toán, đưa cảnh báo và trao đổi dữ liệu với hệ thống phần mềm.
+Dựa trên yêu cầu của hệ thống, lựa chọn các thiết bị cảm biến (RFID RC522, GPS ATGM336H) và vi điều khiển có tích hợp kết nối mạng phù hợp. Thiết kế thiết bị nhỏ gọn có thể gắn vào xe buýt với khả năng tính toán, đưa cảnh báo và trao đổi dữ liệu với hệ thống phần mềm.
 
 4. Xây dựng phân hệ phần mềm
-Phát triển phần mềm nhúng (Firmware) phân tích dữ liệu và thiết lập giao tiếp với người dùng (Telegram Bot, SMS). Xác định các cơ chế cảnh báo và cách thức gửi thông báo đến phụ huynh hoặc cơ quan chức năng khi có học sinh quẹt thẻ hoặc khi có tình huống khẩn cấp.
+Phát triển phần mềm nhúng (Firmware) phân tích dữ liệu và thiết lập giao tiếp với người dùng (thông qua Telegram Bot). Xác định các cơ chế cảnh báo và cách thức gửi thông báo đến phụ huynh hoặc cơ quan chức năng khi có học sinh quẹt thẻ hoặc khi có tình huống khẩn cấp.
 
 5. Kiểm thử và đánh giá hiệu quả
 Triển khai hệ thống vào môi trường thực tế và tiến hành thử nghiệm hoạt động của thiết bị trên xe di chuyển. Đánh giá hiệu quả của hệ thống trong việc nhận diện thẻ, tốc độ gửi tin nhắn và độ chính xác của GPS. Đo lường khả năng hoạt động ổn định và thời gian phản ứng của hệ thống.

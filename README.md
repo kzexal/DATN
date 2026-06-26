@@ -23,8 +23,8 @@ Dự án được thiết kế chuyên nghiệp trên phần mềm **Altium Desi
 
 ### 🔌 Sơ đồ khối các linh kiện chính
 1. **Khối điều khiển trung tâm (MCU):** ESP32-WROOM-32D chịu trách nhiệm xử lý logic chính, đọc thẻ RFID, giao tiếp UART với module SIM/GPS, điều khiển hiển thị OLED và còi báo.
-2. **Khối định vị (GPS):** Module GPS (NEO-6M hoặc NEO-M8N) giao tiếp qua UART để lấy dữ liệu tọa độ Latitude, Longitude thời gian thực.
-3. **Khối truyền thông di động (SIM 4G):** Module SIM 4G LTE (như dòng SIM7600G / SIM7600CE hoặc A7670C) hỗ trợ tập lệnh AT, kết nối Internet di động, tích hợp giao thức SSL/HTTPS để truyền tin nhắn Telegram qua HTTPS.
+2. **Khối định vị (GPS):** Module GPS/BDS ATGM336H giao tiếp qua UART để lấy dữ liệu tọa độ Latitude, Longitude thời gian thực.
+3. **Khối truyền thông di động (SIM 4G):** Module SIM 4G LTE A7680C hỗ trợ tập lệnh AT, kết nối mạng di động để thực hiện gửi SMS cảnh báo dự phòng.
 4. **Khối nhận dạng học sinh (RFID):** Đầu đọc thẻ RFID RC522 (tần số 13.56MHz) giao tiếp qua chuẩn SPI để đọc mã định danh (UID) của thẻ học sinh.
 5. **Khối hiển thị (Display):** Màn hình OLED SH1106 (1.3 inch, I2C) để hiển thị thông tin học sinh, trạng thái kết nối và số vệ tinh bắt được.
 6. **Khối cảnh báo (Alarm):** Còi Buzzer (Active Buzzer) phát tín hiệu âm thanh báo hiệu trạng thái quẹt thẻ.
