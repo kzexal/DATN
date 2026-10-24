@@ -1,0 +1,78 @@
+KỊCH BẢN THUYẾT TRÌNH ĐỒ ÁN TỐT NGHIỆP (BẢN ĐẦY ĐỦ & CHI TIẾT)
+Sinh viên: Bùi Duy Khánh - MSSV: 20224017
+Đề tài: Thiết kế thiết bị giám sát học sinh lên xuống xe buýt đưa đón
+
+--- PHẦN MỞ ĐẦU (Khoảng 1.5 - 2 phút) ---
+
+* Slide 1 & 2: Trang bìa & Tên đề tài
+- Thao tác: Đứng thẳng, mỉm cười, nhìn bao quát Hội đồng.
+- Lời thoại: "Dạ em kính chào Quý thầy cô trong Hội đồng bảo vệ Đồ án tốt nghiệp. Em là Bùi Duy Khánh, sinh viên lớp Kỹ thuật điện tử - viễn thông. Hôm nay, em rất vinh dự được đứng đây để trình bày kết quả nghiên cứu của Đồ án tốt nghiệp với đề tài: 'Thiết kế thiết bị giám sát học sinh lên xuống xe buýt đưa đón'. Đồ án này được em thực hiện dưới sự hướng dẫn vô cùng tận tình của Thạc sĩ Đinh Thị Nhung. Em xin phép được bắt đầu phần trình bày của mình."
+
+* Slide 3: Nội dung trình bày
+- Thao tác: Bấm chuyển slide.
+- Lời thoại: "Bài báo cáo của em hôm nay được chia thành 4 phần chính để Hội đồng dễ theo dõi: Phần 1 là Tổng quan dự án; Phần 2 đi sâu vào Thiết kế và Triển khai hệ thống; Phần 3 là kết quả Kiểm thử, Đánh giá thực tế; và cuối cùng là Kết luận cùng Hướng phát triển trong tương lai."
+
+--- PHẦN 1: TỔNG QUAN DỰ ÁN (Khoảng 3 phút) ---
+
+* Slide 4 & 5: Đặt vấn đề
+- Thao tác: Bấm chuyển slide 5, dùng bút laser chỉ vào biểu đồ bên phải.
+- Lời thoại: "Kính thưa Hội đồng, lý do em quyết định chọn đề tài này xuất phát từ một thực trạng vô cùng nhức nhối hiện nay: đó là các vụ việc thương tâm do bỏ quên trẻ em trên xe đưa đón. Như quý thầy cô có thể quan sát trên biểu đồ bên phải, số ca trẻ em tử vong do sốc nhiệt trên ô tô luôn ở mức đáng báo động, đỉnh điểm như năm 2018 và 2019 lên tới 53 ca mỗi năm. 
+Nguyên nhân sâu xa một phần đến từ quy trình điểm danh thủ công bằng sổ sách hiện nay của các trường học. Cách làm này không những tốn thời gian mà còn rất dễ xảy ra sai sót khi số lượng học sinh đông, giám thị mệt mỏi. Về phía phụ huynh, họ luôn ở trong thế bị động, luôn lo âu vì không biết chính xác con mình đã lên xe an toàn hay chưa và hiện xe đang ở tuyến đường nào. Từ những nỗi đau đó, một yêu cầu cấp thiết được đặt ra là chúng ta cần một hệ thống tự động hóa hoàn toàn việc điểm danh và thông báo vị trí tức thời."
+
+* Slide 6: So sánh với các giải pháp hiện có
+- Thao tác: Bấm chuyển slide, giải thích sự khác biệt.
+- Lời thoại: "Để giải quyết bài toán này, trên thị trường hiện nay có 2 hướng tiếp cận phổ biến. Hướng thứ nhất là dựa vào giám thị điểm danh thủ công – ưu điểm là không tốn kém trang thiết bị nhưng rủi ro sai sót do yếu tố con người lại cao nhất. Hướng thứ hai là lắp đặt các máy chấm công, quẹt thẻ kiểm soát cửa như của ZKTeco hay Ronald Jack. Các máy này tuy nhận diện vân tay, thẻ từ rất tốt nhưng lại được thiết kế để lắp đặt ở những vị trí cố định. Yếu điểm chí mạng của chúng là KHÔNG TÍCH HỢP GPS, do đó không thể cung cấp tọa độ thực của xe khi di chuyển. Các thiết bị định vị hành trình ô tô khác thì lại không thể định danh được từng cá nhân.
+Nhận thấy khoảng trống đó, em đã đề xuất giải pháp của mình: Thiết bị SBAS-32. Đây là sự kết hợp 2 trong 1, vừa định danh cá nhân bằng công nghệ thẻ RFID, vừa định vị không gian bằng module GPS, với tổng chi phí linh kiện được tối ưu cực thấp, chỉ khoảng 600 nghìn đồng, mở ra tính khả thi rất lớn để ứng dụng đại trà."
+
+* Slide 7: Mục tiêu của đồ án
+- Lời thoại: "Từ những phân tích trên, đồ án của em bám sát 2 nhóm mục tiêu chính. Về mục tiêu thiết kế hệ thống, thiết bị phần cứng phải nhỏ gọn, có khả năng chống rung lắc tốt trên xe; đồng thời kết hợp với Cơ sở dữ liệu đám mây thời gian thực và ứng dụng tin nhắn Telegram làm giao diện. Về mục tiêu thực tiễn, sản phẩm làm ra phải tự động hóa 100% khâu điểm danh, cho phép phụ huynh theo dõi hành trình và nhận thông báo ngay lập tức mà không cần phải thực hiện thao tác phức tạp."
+
+--- PHẦN 2: THIẾT KẾ VÀ TRIỂN KHAI (Khoảng 4 - 4.5 phút) ---
+
+* Slide 8 & 9: Sơ đồ tổng quan hệ thống
+- Thao tác: Chỉ tay bao quát 3 lớp của hệ thống trên slide.
+- Lời thoại: "Tiếp theo, em xin đi vào chi tiết cấu trúc hệ thống. Hệ thống của em được xây dựng theo chuẩn kiến trúc IoT với 4 lớp cơ bản. Tại lớp Thiết bị (Perception Layer), em sử dụng vi điều khiển trung tâm ESP32 để thu thập dữ liệu từ đầu đọc thẻ RFID và module định vị GPS. Dữ liệu này sau đó được đẩy qua lớp Mạng (Wi-Fi) lên lớp Đám mây (Cloud), cụ thể là Firebase Realtime Database. Cuối cùng, tại lớp Ứng dụng, máy chủ sẽ kích hoạt Telegram Bot API để tương tác 2 chiều với điện thoại của phụ huynh và nhà trường."
+
+* Slide 10: Luồng hoạt động chính của thiết bị
+- Lời thoại: "Để hệ thống vận hành mượt mà, bài toán phần mềm khó nhất em phải giải quyết là làm sao để thiết bị vừa đọc GPS liên tục, vừa quét thẻ mà không bị treo hay nghẽn lệnh. Giải pháp của em là ứng dụng Hệ điều hành thời gian thực FreeRTOS, tận dụng sức mạnh lõi kép của chip ESP32. Em cấp phát Core 0 chạy một luồng ngầm chuyên biệt chỉ để đọc và giải mã chuỗi tọa độ NMEA từ module GPS. Toàn bộ tài nguyên của Core 1 được dồn cho vòng lặp chính để xử lý ngắt quét thẻ RFID, giao tiếp màn hình OLED, đồng bộ dữ liệu với Firebase và lắng nghe lệnh từ Telegram. Nhờ cơ chế này, tốc độ phản hồi của thiết bị luôn được đảm bảo ở mức cao nhất."
+
+* Slide 11 & 12: Sơ đồ nguyên lý và Mạch hoàn thiện
+- Thao tác: Nếu có mạch thực tế, cầm lên cho hội đồng xem.
+- Lời thoại: "Về mặt gia công, từ sơ đồ nguyên lý, em đã tự thiết kế layout mạch in PCB 2 lớp trên phần mềm Altium để chống nhiễu điện từ tốt nhất cho tín hiệu vô tuyến. Mạch thành phẩm được bọc trong vỏ hộp nhựa cứng cáp, sử dụng cổng cấp nguồn Type-C 5V thông dụng để tăng tính cơ động, chịu được môi trường rung lắc trên xe."
+
+* Slide 13: Phân hệ Database
+- Lời thoại: "Đối với lớp dữ liệu, em lựa chọn Firebase Realtime Database của Google. Khác với các hệ quản trị CSDL quan hệ truyền thống, Firebase lưu trữ dữ liệu dưới định dạng cây JSON, giúp thiết bị ESP32 có thể cập nhật trạng thái Lên/Xuống xe (In/Out) của từng học sinh cực kỳ nhanh chóng thông qua các API RESTful."
+
+* Slide 14: Phân hệ Telegram Bot API
+- Lời thoại: "Ở phần tương tác người dùng, thay vì phải viết một App di động phức tạp từ đầu và bắt phụ huynh tải về, em đã tận dụng nền tảng Telegram Bot. Giao diện này không chỉ hoàn toàn miễn phí, độ trễ thấp mà còn hỗ trợ đẩy tin nhắn thông báo tức thời. Phụ huynh sẽ lập tức nhận được tên học sinh, thời gian quẹt thẻ và đường link Google Maps định vị vị trí xe tại đúng thời điểm đó."
+
+--- PHẦN 3: KIỂM THỬ - ĐÁNH GIÁ (Khoảng 2.5 phút) ---
+
+* Slide 15 & 16: Điều kiện kiểm thử
+- Lời thoại: "Để chứng minh tính hiệu quả, em đã đem thiết bị ra chạy thử nghiệm thực tế. Bài test được chia làm 2 điều kiện: Điều kiện 1 là môi trường quang đãng, xe di chuyển bình thường, sóng mạng và vệ tinh đầy đủ. Điều kiện 2 là khi xe chạy qua khu vực có nhiều vật cản như tầng hầm, khiến cả sóng điện thoại và sóng GPS đều yếu đi."
+
+* Slide 17: Kiểm thử tính năng nhận diện
+- Lời thoại: "Kết quả kiểm thử tính năng điểm danh vô cùng khả quan. Ở Điều kiện 1, trong 15 lần quét thẻ ngẫu nhiên, thiết bị đều đọc thẻ cực nhạy, còi kêu bíp, đảo trạng thái và đẩy thông báo thành công 15/15 lần (đạt 100%). Tuy nhiên, ở Điều kiện 2, do mất kết nối mạng Wi-Fi nên thiết bị không thể đẩy dữ liệu lên Firebase, dẫn đến tỉ lệ lỗi cao. Điều này phản ánh đúng giới hạn vật lý của kết nối mạng không dây."
+
+* Slide 18: Kiểm thử tính năng truy vấn
+- Lời thoại: "Bên cạnh việc nhận thông báo thụ động, hệ thống còn hỗ trợ phụ huynh chủ động nhắn lệnh '/vitri' để tìm xe. Nhờ cơ chế Polling cứ 10 giây quét lệnh một lần, thiết bị đã phản hồi lại vị trí vô cùng chính xác. Dưới điều kiện ngoài trời, module GPS ATGM336H cho ra sai số định vị chỉ dưới 20 mét, hoàn toàn đáp ứng được nhu cầu xác định tuyến đường của xe."
+
+--- PHẦN 4: KẾT LUẬN - HƯỚNG PHÁT TRIỂN (Khoảng 2 phút) ---
+
+* Slide 19 & 20: Kết luận
+- Lời thoại: "Kính thưa Hội đồng, từ những số liệu thử nghiệm trên, em xin được rút ra kết luận: Đồ án đã hoàn thành xuất sắc mục tiêu cốt lõi, chế tạo thành công thiết bị IoT tích hợp định danh và định vị, chạy đa nhiệm ổn định trên ESP32. Mặc dù vậy, em cũng nhận thức rõ điểm yếu của hệ thống hiện tại là kích thước mạch vẫn còn lớn và sự phụ thuộc hoàn toàn vào mạng Wi-Fi nội bộ trên xe."
+
+* Slide 21: Hướng phát triển
+- Lời thoại: "Để nâng cấp sản phẩm tiệm cận với tiêu chuẩn thương mại, định hướng tiếp theo của em là thiết kế lại mạch 4 lớp dùng 100% linh kiện dán SMD. Đặc biệt, em sẽ tích hợp thêm module SIM 4G để hệ thống tự chủ kết nối mạng và có khả năng gửi tin nhắn SMS dự phòng; đồng thời thêm khe cắm thẻ MicroSD để lưu trữ dữ liệu ngoại tuyến mỗi khi xe đi vào vùng 'lõm' sóng."
+
+* Slide 22: Thank You
+- Thao tác: Mỉm cười, cúi đầu trân trọng chào hội đồng.
+- Lời thoại: "Phần trình bày Đồ án tốt nghiệp của em đến đây là kết thúc. Em xin chân thành cảm ơn Quý Thầy Cô trong Hội đồng đã dành thời gian theo dõi. Em rất mong nhận được những nhận xét quý báu và các câu hỏi từ Thầy Cô để giúp em hoàn thiện đồ án và tích lũy thêm kinh nghiệm ạ. Em xin trân trọng cảm ơn!"
+
+--- SLIDE BỔ TRỢ (Dự phòng cho phần Hỏi Đáp Q&A) ---
+
+* Trả lời khi bị hỏi về "Khách hàng & Tính thương mại hóa" (Mở Slide 24): 
+"Dạ thưa Hội đồng, hệ thống này mang lại lợi ích cho cả 3 bên. Nhà trường tiết kiệm được chi phí nhân sự vận hành; đơn vị vận tải tăng được uy tín; và phụ huynh thì được an tâm tuyệt đối về con em mình."
+
+* Trả lời khi bị hỏi về "Chi phí và Giá thành" (Mở Slide 25): 
+"Dạ chi phí linh kiện nguyên mẫu hiện tại chỉ mất khoảng 595.000 VNĐ. Nếu sản xuất công nghiệp số lượng lớn, chuyển sang linh kiện dán SMD thì chi phí sẽ còn giảm sâu hơn nữa, rất phù hợp để các trường học trang bị đồng loạt ạ."
